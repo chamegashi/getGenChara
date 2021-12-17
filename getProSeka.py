@@ -3,26 +3,20 @@ from bs4 import BeautifulSoup
 import time
 
 def getImage():
-    url = 'https://wikiwiki.jp/genshinwiki/'
+    url = 'https://pampulte.com/procecacharacter/'
     res = requests.get(url)
     soup = BeautifulSoup(res.text, 'html.parser')
-    img_tags = soup.find_all("img")
-
-    print(img_tags)
+    img_tags = soup.find_all("img", width="768")
 
     for tag in img_tags:
-        print(tag)
+        response = requests.get(tag['src'])
+        image = response.content
 
-    # response = requests.get(img_tag['src'])
-    # image = response.content
-
-    # with open("img/" + name, "wb") as f:
-    #     f.write(image)
-    
-    # print("saved: " + name)
-
-    
-# text-align:center; width:300px;
+        with open("proImage/" + tag["alt"] + ".jpg", "wb") as f:
+            f.write(image)
+        
+        print("saved: " + tag["alt"])
+        time.sleep(1)
 
 if __name__ == "__main__":
     getImage()
